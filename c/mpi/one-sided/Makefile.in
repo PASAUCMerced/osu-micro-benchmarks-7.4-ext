@@ -89,7 +89,8 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 one_sided_PROGRAMS = osu_acc_latency$(EXEEXT) osu_get_bw$(EXEEXT) \
-	osu_get_latency$(EXEEXT) osu_put_bibw$(EXEEXT) \
+	osu_get_mbw$(EXEEXT) osu_get_latency$(EXEEXT) \
+	osu_get_multi_lat$(EXEEXT) osu_put_bibw$(EXEEXT) \
 	osu_put_bw$(EXEEXT) osu_put_latency$(EXEEXT) $(am__EXEEXT_1)
 @MPI3_LIBRARY_TRUE@am__append_1 = osu_get_acc_latency osu_fop_latency osu_cas_latency
 @CUDA_KERNELS_TRUE@am__append_2 = ../../util/kernel.cu
@@ -179,6 +180,25 @@ am_osu_get_latency_OBJECTS = osu_get_latency.$(OBJEXT) \
 	$(am__objects_2)
 osu_get_latency_OBJECTS = $(am_osu_get_latency_OBJECTS)
 osu_get_latency_LDADD = $(LDADD)
+am__osu_get_mbw_SOURCES_DIST = osu_get_mbw.c ../../util/osu_util.c \
+	../../util/osu_util.h ../../util/osu_util_mpi.c \
+	../../util/osu_util_mpi.h ../../util/osu_util_graph.c \
+	../../util/osu_util_graph.h ../../util/osu_util_papi.c \
+	../../util/osu_util_papi.h ../../util/osu_util_validation.c \
+	../../util/kernel.cu
+am_osu_get_mbw_OBJECTS = osu_get_mbw.$(OBJEXT) $(am__objects_2)
+osu_get_mbw_OBJECTS = $(am_osu_get_mbw_OBJECTS)
+osu_get_mbw_LDADD = $(LDADD)
+am__osu_get_multi_lat_SOURCES_DIST = osu_get_multi_lat.c \
+	../../util/osu_util.c ../../util/osu_util.h \
+	../../util/osu_util_mpi.c ../../util/osu_util_mpi.h \
+	../../util/osu_util_graph.c ../../util/osu_util_graph.h \
+	../../util/osu_util_papi.c ../../util/osu_util_papi.h \
+	../../util/osu_util_validation.c ../../util/kernel.cu
+am_osu_get_multi_lat_OBJECTS = osu_get_multi_lat.$(OBJEXT) \
+	$(am__objects_2)
+osu_get_multi_lat_OBJECTS = $(am_osu_get_multi_lat_OBJECTS)
+osu_get_multi_lat_LDADD = $(LDADD)
 am__osu_put_bibw_SOURCES_DIST = osu_put_bibw.c ../../util/osu_util.c \
 	../../util/osu_util.h ../../util/osu_util_mpi.c \
 	../../util/osu_util_mpi.h ../../util/osu_util_graph.c \
@@ -231,7 +251,8 @@ am__depfiles_remade = ../../util/$(DEPDIR)/kernel.Po \
 	./$(DEPDIR)/osu_acc_latency.Po ./$(DEPDIR)/osu_cas_latency.Po \
 	./$(DEPDIR)/osu_fop_latency.Po \
 	./$(DEPDIR)/osu_get_acc_latency.Po ./$(DEPDIR)/osu_get_bw.Po \
-	./$(DEPDIR)/osu_get_latency.Po ./$(DEPDIR)/osu_put_bibw.Po \
+	./$(DEPDIR)/osu_get_latency.Po ./$(DEPDIR)/osu_get_mbw.Po \
+	./$(DEPDIR)/osu_get_multi_lat.Po ./$(DEPDIR)/osu_put_bibw.Po \
 	./$(DEPDIR)/osu_put_bw.Po ./$(DEPDIR)/osu_put_latency.Po
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
@@ -273,6 +294,7 @@ am__v_CXXLD_1 =
 SOURCES = $(osu_acc_latency_SOURCES) $(osu_cas_latency_SOURCES) \
 	$(osu_fop_latency_SOURCES) $(osu_get_acc_latency_SOURCES) \
 	$(osu_get_bw_SOURCES) $(osu_get_latency_SOURCES) \
+	$(osu_get_mbw_SOURCES) $(osu_get_multi_lat_SOURCES) \
 	$(osu_put_bibw_SOURCES) $(osu_put_bw_SOURCES) \
 	$(osu_put_latency_SOURCES)
 DIST_SOURCES = $(am__osu_acc_latency_SOURCES_DIST) \
@@ -281,6 +303,8 @@ DIST_SOURCES = $(am__osu_acc_latency_SOURCES_DIST) \
 	$(am__osu_get_acc_latency_SOURCES_DIST) \
 	$(am__osu_get_bw_SOURCES_DIST) \
 	$(am__osu_get_latency_SOURCES_DIST) \
+	$(am__osu_get_mbw_SOURCES_DIST) \
+	$(am__osu_get_multi_lat_SOURCES_DIST) \
 	$(am__osu_put_bibw_SOURCES_DIST) \
 	$(am__osu_put_bw_SOURCES_DIST) \
 	$(am__osu_put_latency_SOURCES_DIST)
@@ -427,6 +451,7 @@ pdfdir = @pdfdir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
 psdir = @psdir@
+runstatedir = @runstatedir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
@@ -453,6 +478,8 @@ osu_put_bw_SOURCES = osu_put_bw.c $(UTILITIES)
 osu_put_bibw_SOURCES = osu_put_bibw.c $(UTILITIES)
 osu_get_latency_SOURCES = osu_get_latency.c $(UTILITIES)
 osu_get_bw_SOURCES = osu_get_bw.c $(UTILITIES)
+osu_get_mbw_SOURCES = osu_get_mbw.c $(UTILITIES)
+osu_get_multi_lat_SOURCES = osu_get_multi_lat.c $(UTILITIES)
 osu_acc_latency_SOURCES = osu_acc_latency.c $(UTILITIES)
 osu_fop_latency_SOURCES = osu_fop_latency.c $(UTILITIES)
 osu_cas_latency_SOURCES = osu_cas_latency.c $(UTILITIES)
@@ -588,6 +615,14 @@ osu_get_latency$(EXEEXT): $(osu_get_latency_OBJECTS) $(osu_get_latency_DEPENDENC
 	@rm -f osu_get_latency$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(osu_get_latency_OBJECTS) $(osu_get_latency_LDADD) $(LIBS)
 
+osu_get_mbw$(EXEEXT): $(osu_get_mbw_OBJECTS) $(osu_get_mbw_DEPENDENCIES) $(EXTRA_osu_get_mbw_DEPENDENCIES) 
+	@rm -f osu_get_mbw$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(osu_get_mbw_OBJECTS) $(osu_get_mbw_LDADD) $(LIBS)
+
+osu_get_multi_lat$(EXEEXT): $(osu_get_multi_lat_OBJECTS) $(osu_get_multi_lat_DEPENDENCIES) $(EXTRA_osu_get_multi_lat_DEPENDENCIES) 
+	@rm -f osu_get_multi_lat$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(osu_get_multi_lat_OBJECTS) $(osu_get_multi_lat_LDADD) $(LIBS)
+
 osu_put_bibw$(EXEEXT): $(osu_put_bibw_OBJECTS) $(osu_put_bibw_DEPENDENCIES) $(EXTRA_osu_put_bibw_DEPENDENCIES) 
 	@rm -f osu_put_bibw$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(osu_put_bibw_OBJECTS) $(osu_put_bibw_LDADD) $(LIBS)
@@ -619,6 +654,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/osu_get_acc_latency.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/osu_get_bw.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/osu_get_latency.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/osu_get_mbw.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/osu_get_multi_lat.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/osu_put_bibw.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/osu_put_bw.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/osu_put_latency.Po@am__quote@ # am--include-marker
@@ -825,6 +862,8 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/osu_get_acc_latency.Po
 	-rm -f ./$(DEPDIR)/osu_get_bw.Po
 	-rm -f ./$(DEPDIR)/osu_get_latency.Po
+	-rm -f ./$(DEPDIR)/osu_get_mbw.Po
+	-rm -f ./$(DEPDIR)/osu_get_multi_lat.Po
 	-rm -f ./$(DEPDIR)/osu_put_bibw.Po
 	-rm -f ./$(DEPDIR)/osu_put_bw.Po
 	-rm -f ./$(DEPDIR)/osu_put_latency.Po
@@ -885,6 +924,8 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/osu_get_acc_latency.Po
 	-rm -f ./$(DEPDIR)/osu_get_bw.Po
 	-rm -f ./$(DEPDIR)/osu_get_latency.Po
+	-rm -f ./$(DEPDIR)/osu_get_mbw.Po
+	-rm -f ./$(DEPDIR)/osu_get_multi_lat.Po
 	-rm -f ./$(DEPDIR)/osu_put_bibw.Po
 	-rm -f ./$(DEPDIR)/osu_put_bw.Po
 	-rm -f ./$(DEPDIR)/osu_put_latency.Po
